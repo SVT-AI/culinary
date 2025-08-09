@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Culinary Arts 🍽</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo" class="logo" />
+    <h1>Przepisy & Inspiracje Kulinarne</h1>
+    <p class="subtitle">Przekąski • Dania główne • Zupy • Desery</p>
+  </header>
+
+  <section class="controls">
+    <input type="text" id="search-input" placeholder="Szukaj po nazwie..." />
+    <div class="filters">
+      <button data-filter="all" class="filter-btn active">Wszystkie</button>
+      <button data-filter="przekąski" class="filter-btn">Przekąski</button>
+      <button data-filter="dania główne" class="filter-btn">Dania główne</button>
+      <button data-filter="zupy" class="filter-btn">Zupy</button>
+      <button data-filter="desery" class="filter-btn">Desery</button>
+    </div>
+  </section>
+
+  <section class="gallery" id="image-gallery">
+    <!-- Zdjęcia będą ładowane dynamicznie -->
+  </section>
+
+  <div id="lightbox" class="lightbox hidden">
+    <span class="close">&times;</span>
+    <img class="lightbox-image" src="" alt="" />
+    <div class="lightbox-caption"></div>
+    <div class="share-buttons">
+      <a id="share-email" href="#" target="_blank">📧 Wyślij mailem</a>
+      <a id="share-whatsapp" href="#" target="_blank">💬 Udostępnij WhatsApp</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Culinary Arts. Wszelkie prawa zastrzeżone.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
