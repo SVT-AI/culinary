@@ -1,159 +1,482 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Culinary Arts 🍽 — Przepisy & Inspiracje</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heritage Coins PL – Kolekcjonerskie monety na sprzedaż</title>
+  <meta name="description" content="Unikalne monety kolekcjonerskie: Polska Rzeczpospolita Ludowa, CCCP, forinty, 25 bani, Mikołaj Kopernik, Międzynarodowy Rok Dziecka i wiele innych.">
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --card-bg: #111;
+      --accent: #f5c451;
+      --text: #f5f5f5;
+      --muted: #aaaaaa;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+      --radius: 12px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
 
-  <!-- SEO / Social -->
-  <meta name="description" content="Pyszne, szybkie przepisy — przekąski, dania główne, zupy i desery. Szukaj, filtruj i udostępniaj ulubione dania.">
-  <meta property="og:title" content="Culinary Arts — Przepisy & Inspiracje">
-  <meta property="og:description" content="12 przepisów + wyszukiwarka, filtry, ulubione i strona szczegółu.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="logo.png">
+    * { box-sizing: border-box; }
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #222 0, #050505 55%);
+      color: var(--text);
+    }
 
-  <link rel="stylesheet" href="style.css" />
+    header {
+      padding: 24px 20px 16px;
+      text-align: center;
+      border-bottom: 1px solid #222;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .top-bar h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filters select,
+    .filters input {
+      background: #111;
+      border: 1px solid #333;
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #141414, #050505);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #222;
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.7);
+      color: var(--accent);
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      object-fit: cover;
+      max-height: 220px;
+    }
+
+    .card-content {
+      margin-top: 10px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .card .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 4px;
+    }
+
+    .price-row .start {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .price-row .current {
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 14px rgba(245,196,81,0.4);
+    }
+
+    .btn-secondary {
+      background: #181818;
+      color: var(--text);
+      border: 1px solid #333;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+
+    .bid-form {
+      margin-top: 10px;
+      display: none;
+      border-top: 1px solid #222;
+      padding-top: 10px;
+      gap: 6px;
+      display: none;
+      flex-direction: column;
+    }
+
+    .bid-form input {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #050505;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .bid-form small {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .badge-status {
+      font-size: 0.75rem;
+      color: var(--success);
+    }
+
+    footer {
+      border-top: 1px solid #222;
+      padding: 16px 20px 24px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.5rem; }
+      .top-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#image-gallery">Przejdź do galerii</a>
 
-  <header>
-    <button id="back-btn" class="btn back-btn" aria-label="Cofnij do poprzedniego ekranu" hidden aria-hidden="true">← Cofnij</button>
-    <button id="theme-toggle" class="btn ghost theme-toggle" aria-label="Przełącz tryb kolorów">🌙</button>
+<header>
+  <h1>Heritage Coins PL</h1>
+  <p>Monety kolekcjonerskie · PRL · CCCP · świat · limitowane emisje</p>
+</header>
 
-    <div class="header-inner">
-      <img src="logo.png" alt="Logo Culinary Arts" class="logo" />
-      <div class="title-wrap">
-        <h1>Przepisy &amp; Inspiracje Kulinarne</h1>
-        <p class="subtitle">Przekąski • Dania główne • Zupy • Desery</p>
-      </div>
-    </div>
-
-    <!-- Dekoracyjna fala -->
-    <svg class="header-wave" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,80 C240,140 480,20 720,60 C960,100 1200,160 1440,120 L1440,180 L0,180 Z" fill="url(#grad)"></path>
-      <defs>
-        <linearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0%" stop-color="#ff7e5f"/>
-          <stop offset="100%" stop-color="#feb47b"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </header>
-
-  <main>
-    <section class="controls" aria-label="Wyszukiwanie i filtrowanie">
-      <div class="controls-inner">
-        <input type="text" id="search-input" placeholder="Szukaj po nazwie, tagu lub składniku…" aria-label="Szukaj" />
-        <select id="category-select" aria-label="Kategoria">
-          <option value="all">Wszystkie kategorie</option>
-          <option value="Przekąski">Przekąski</option>
-          <option value="Dania główne">Dania główne</option>
-          <option value="Zupy">Zupy</option>
-          <option value="Desery">Desery</option>
-        </select>
-
-        <label class="fav-toggle">
-          <input type="checkbox" id="fav-only" />
-          <span>♥ Tylko ulubione</span>
-        </label>
-
-        <span id="results-count" class="results-count" aria-live="polite">Wyniki: 0</span>
-      </div>
-    </section>
-
-    <section class="gallery" id="image-gallery" aria-live="polite"></section>
-  </main>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Podgląd przepisu">
-    <button class="close" aria-label="Zamknij powiększenie">&times;</button>
-    <img class="lightbox-image" src="" alt="" />
-    <div class="lightbox-caption"></div>
-
-    <div class="share-bar">
-      <button class="btn share" id="share-native" aria-label="Udostępnij">Udostępnij</button>
-      <a class="btn ghost" id="share-fb" target="_blank" rel="noopener" aria-label="Udostępnij na Facebooku">Facebook</a>
-      <a class="btn ghost" id="share-x" target="_blank" rel="noopener" aria-label="Udostępnij na X (Twitter)">X</a>
-      <button class="btn ghost" id="share-copy" aria-label="Skopiuj link">Kopiuj link</button>
+<div class="container">
+  <div class="top-bar">
+    <h2>Dostępne monety</h2>
+    <div class="filters">
+      <input type="search" id="search" placeholder="Szukaj: Kopernik, 2 zł, PRL...">
+      <select id="filterCountry">
+        <option value="">Kraj: wszystkie</option>
+        <option value="Polska">Polska</option>
+        <option value="CCCP">CCCP</option>
+        <option value="Rumunia">Rumunia</option>
+        <option value="Węgry">Węgry</option>
+        <option value="Kanada">Kanada</option>
+      </select>
+      <select id="filterType">
+        <option value="">Typ: wszystkie</option>
+        <option value="okolicznościowa">Okolicznościowa</option>
+        <option value="obiegowa">Obiegowa</option>
+      </select>
     </div>
   </div>
 
-  <!-- Szczegóły przepisu -->
-  <section id="detail-panel" class="detail hidden" role="dialog" aria-modal="true" aria-labelledby="detail-title">
-    <div class="detail-inner">
-      <button class="btn ghost detail-close" id="detail-close" aria-label="Zamknij szczegóły">✕</button>
-      <button class="btn ghost detail-print" id="detail-print" aria-label="Drukuj przepis">🖨 Drukuj</button>
-
-      <h2 id="detail-title"></h2>
-      <div class="detail-meta" id="detail-meta"></div>
-      <img id="detail-image" alt="" />
-
-      <div class="detail-grid">
-        <section>
-          <h3>Składniki</h3>
-          <ul id="detail-ingredients"></ul>
-        </section>
-        <section>
-          <h3>Kroki</h3>
-          <ol id="detail-steps"></ol>
-        </section>
-      </div>
-
-      <aside class="detail-tips">
-        <h3>Porady</h3>
-        <p id="detail-tips"></p>
-      </aside>
-    </div>
-  </section>
-
-  <section class="contact" id="contact" aria-labelledby="contact-title">
-    <div class="contact-inner">
-      <h2 id="contact-title">Kontakt</h2>
-      <p class="contact-sub">Masz pytania lub propozycje przepisów? Napisz do nas!</p>
-      <form id="contact-form" novalidate>
-        <div class="field">
-          <label for="cf-name">Imię *</label>
-          <input id="cf-name" name="name" type="text" placeholder="Twoje imię" required />
-          <small class="err" id="err-name"></small>
+  <div class="grid" id="coinsGrid">
+    <!-- Przykładowa moneta: Mikołaj Kopernik 20 zł -->
+    <div class="card" data-country="Polska" data-type="okolicznościowa" data-name="Mikołaj Kopernik 20 zł">
+      <span class="badge">Polska · PRL</span>
+      <img src="img/kopernik-20-zlotych.jpg" alt="Moneta Mikołaj Kopernik 20 zł" loading="lazy">
+      <div class="card-content">
+        <h3>Mikołaj Kopernik – 20 zł</h3>
+        <div class="meta">Rzeczpospolita Ludowa · srebrzona moneta kolekcjonerska</div>
+        <div class="price-row">
+          <span class="start">Cena startowa: 120 zł</span>
+          <span class="current">Aktualna oferta: 150 zł</span>
         </div>
-        <div class="field">
-          <label for="cf-email">E-mail *</label>
-          <input id="cf-email" name="email" type="email" placeholder="np. ala@kuchnia.pl" required />
-          <small class="err" id="err-email"></small>
-        </div>
-        <div class="field">
-          <label for="cf-topic">Temat</label>
-          <input id="cf-topic" name="topic" type="text" placeholder="Czego dotyczy wiadomość?" />
-        </div>
-        <div class="field">
-          <label for="cf-message">Wiadomość *</label>
-          <textarea id="cf-message" name="message" rows="5" placeholder="Napisz wiadomość..." required></textarea>
-          <small class="err" id="err-message"></small>
-        </div>
-        <label class="consent">
-          <input type="checkbox" id="cf-consent" required />
-          <span>Wyrażam zgodę na kontakt zwrotny na podany adres e-mail.</span>
-        </label>
         <div class="actions">
-          <button type="submit" class="btn">Wyślij</button>
-          <span id="cf-status" class="status" aria-live="polite"></span>
+          <button class="btn-primary" data-form="bid1">Licytuj</button>
+          <button class="btn-secondary">Kup teraz 220 zł</button>
         </div>
-      </form>
+        <form class="bid-form" id="bid1">
+          <input type="text" name="name" placeholder="Imię" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="number" name="bid" placeholder="Twoja oferta (min. 151 zł)" min="151" required>
+          <small>Moneta z serii upamiętniającej Mikołaja Kopernika.</small>
+          <button type="submit" class="btn-primary">Wyślij ofertę</button>
+        </form>
+      </div>
     </div>
-  </section>
 
-  <button id="to-top" class="to-top" aria-label="Przewiń do góry">↑</button>
+    <!-- Międzynarodowy Rok Dziecka – 100 zł -->
+    <div class="card" data-country="Polska" data-type="okolicznościowa" data-name="Międzynarodowy Rok Dziecka 100 zł">
+      <span class="badge">Polska · PRL</span>
+      <img src="img/miedzynarodowy-rok-dziecka-100-zlotych.jpg" alt="Moneta Międzynarodowy Rok Dziecka 100 zł" loading="lazy">
+      <div class="card-content">
+        <h3>Międzynarodowy Rok Dziecka – 100 zł</h3>
+        <div class="meta">„MIĘDZYNARODOWY ROK.DZIECKA” · moneta okolicznościowa</div>
+        <div class="price-row">
+          <span class="start">Cena startowa: 90 zł</span>
+          <span class="current">Aktualna oferta: 110 zł</span>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" data-form="bid2">Licytuj</button>
+          <button class="btn-secondary">Kup teraz 180 zł</button>
+        </div>
+        <form class="bid-form" id="bid2">
+          <input type="text" name="name" placeholder="Imię" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="number" name="bid" placeholder="Twoja oferta (min. 111 zł)" min="111" required>
+          <small>Popularna moneta PRL z motywem Międzynarodowego Roku Dziecka.</small>
+          <button type="submit" class="btn-primary">Wyślij ofertę</button>
+        </form>
+      </div>
+    </div>
 
-  <footer>
-    <p>© 2025 Culinary Arts. Wszelkie prawa zastrzeżone.</p>
-  </footer>
+    <!-- 2 zł Jeż – Erinaceus europaeus -->
+    <div class="card" data-country="Polska" data-type="okolicznościowa" data-name="Jeż 2 zł">
+      <span class="badge">Polska · współczesna</span>
+      <img src="img/jez-2-zlote.jpg" alt="Moneta 2 zł Jeż – Erinaceus europaeus" loading="lazy">
+      <div class="card-content">
+        <h3>Jeż – 2 zł GN</h3>
+        <div class="meta">„JEZ – Erinaceus europaeus” · seria zwierzęta</div>
+        <div class="price-row">
+          <span class="start">Cena startowa: 15 zł</span>
+          <span class="current">Aktualna oferta: 22 zł</span>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" data-form="bid3">Licytuj</button>
+          <button class="btn-secondary">Kup teraz 40 zł</button>
+        </div>
+        <form class="bid-form" id="bid3">
+          <input type="text" name="name" placeholder="Imię" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="number" name="bid" placeholder="Twoja oferta (min. 23 zł)" min="23" required>
+          <small>Moneta z serii zwierząt, idealna dla kolekcjonerów tematycznych.</small>
+          <button type="submit" class="btn-primary">Wyślij ofertę</button>
+        </form>
+      </div>
+    </div>
 
-  <script src="script.js"></script>
+    <!-- Rubel CCCP -->
+    <div class="card" data-country="CCCP" data-type="obiegowa" data-name="Rubel CCCP">
+      <span class="badge">CCCP</span>
+      <img src="img/rubel-cccp.jpg" alt="Moneta 1 rubel CCCP" loading="lazy">
+      <div class="card-content">
+        <h3>1 РУБЛЬ – CCCP</h3>
+        <div class="meta">„РУБЛЬ CC-CP” · moneta obiegowa ZSRR</div>
+        <div class="price-row">
+          <span class="start">Cena startowa: 25 zł</span>
+          <span class="current">Aktualna oferta: 35 zł</span>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" data-form="bid4">Licytuj</button>
+          <button class="btn-secondary">Kup teraz 60 zł</button>
+        </div>
+        <form class="bid-form" id="bid4">
+          <input type="text" name="name" placeholder="Imię" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="number" name="bid" placeholder="Twoja oferta (min. 36 zł)" min="36" required>
+          <small>Klasyczna moneta CCCP, dobra jako uzupełnienie zbioru ZSRR.</small>
+          <button type="submit" class="btn-primary">Wyślij ofertę</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 25 BANI -->
+    <div class="card" data-country="Rumunia" data-type="obiegowa" data-name="25 bani">
+      <span class="badge">Rumunia</span>
+      <img src="img/25-bani.jpg" alt="Moneta 25 bani" loading="lazy">
+      <div class="card-content">
+        <h3>25 BANI</h3>
+        <div class="meta">„25 BANI” · moneta obiegowa</div>
+        <div class="price-row">
+          <span class="start">Cena startowa: 5 zł</span>
+          <span class="current">Aktualna oferta: 8 zł</span>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" data-form="bid5">Licytuj</button>
+          <button class="btn-secondary">Kup teraz 15 zł</button>
+        </div>
+        <form class="bid-form" id="bid5">
+          <input type="text" name="name" placeholder="Imię" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="number" name="bid" placeholder="Twoja oferta (min. 9 zł)" min="9" required>
+          <small>Moneta zagraniczna, dobra do zestawów „świat”.</small>
+          <button type="submit" class="btn-primary">Wyślij ofertę</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Forint -->
+    <div class="card" data-country="Węgry" data-type="obiegowa" data-name="Forint">
+      <span class="badge">Węgry</span>
+      <img src="img/forint-20.jpg" alt="Moneta 20 forintów" loading="lazy">
+      <div class="card-content">
+        <h3>20 FORINT</h3>
+        <div class="meta">„FORINT” · moneta obiegowa Węgry</div>
+        <div class="price-row">
+          <span class="start">Cena startowa: 4 zł</span>
+          <span class="current">Aktualna oferta: 6 zł</span>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" data-form="bid6">Licytuj</button>
+          <button class="btn-secondary">Kup teraz 12 zł</button>
+        </div>
+        <form class="bid-form" id="bid6">
+          <input type="text" name="name" placeholder="Imię" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="number" name="bid" placeholder="Twoja oferta (min. 7 zł)" min="7" required>
+          <small>Moneta do zestawów „Europa Środkowa”.</small>
+          <button type="submit" class="btn-primary">Wyślij ofertę</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Dodawaj kolejne monety kopiując strukturę kart powyżej -->
+  </div>
+</div>
+
+<footer>
+  Sprzedaż prywatna kolekcji. Skontaktuj się mailowo, aby potwierdzić dostępność i warunki wysyłki.
+</footer>
+
+<script>
+  // Pokazywanie / chowanie formularzy licytacji
+  document.querySelectorAll('.btn-primary[data-form]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-form');
+      const form = document.getElementById(id);
+      if (!form) return;
+      const isVisible = form.style.display === 'flex';
+      document.querySelectorAll('.bid-form').forEach(f => f.style.display = 'none');
+      form.style.display = isVisible ? 'none' : 'flex';
+    });
+  });
+
+  // „Fake” submit – tu później podepniesz backend / e-mail
+  document.querySelectorAll('.bid-form').forEach(form => {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = data.get('name');
+      const bid = data.get('bid');
+      alert(`Dziękujemy, ${name}! Twoja oferta ${bid} zł została zapisana (demo).`);
+      form.reset();
+      form.style.display = 'none';
+    });
+  });
+
+  // Proste filtrowanie po nazwie, kraju i typie
+  const searchInput = document.getElementById('search');
+  const filterCountry = document.getElementById('filterCountry');
+  const filterType = document.getElementById('filterType');
+  const cards = Array.from(document.querySelectorAll('.card'));
+
+  function applyFilters() {
+    const q = (searchInput.value || '').toLowerCase();
+    const c = filterCountry.value;
+    const t = filterType.value;
+
+    cards.forEach(card => {
+      const name = (card.dataset.name || '').toLowerCase();
+      const country = card.dataset.country || '';
+      const type = card.dataset.type || '';
+
+      const matchText = !q || name.includes(q);
+      const matchCountry = !c || country === c;
+      const matchType = !t || type === t;
+
+      card.style.display = (matchText && matchCountry && matchType) ? '' : 'none';
+    });
+  }
+
+  [searchInput, filterCountry, filterType].forEach(el => {
+    el.addEventListener('input', applyFilters);
+    el.addEventListener('change', applyFilters);
+  });
+</script>
+
 </body>
 </html>
